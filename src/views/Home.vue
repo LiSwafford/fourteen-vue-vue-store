@@ -1,18 +1,32 @@
 <template>
   <div class="home">
-    <img src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div @click="goTo(prod.id)" :key="prod.id" v-for="prod in products">
+      <img :src="prod.image" width="200px" alt=""> {{prod.title}}
+      <hr/>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import service from '@/assets/service'
 
 export default {
-  name: 'home',
-  components: {
-    HelloWorld
-  }
+ data(){
+   return {
+     products: []
+   }
+ }, 
+ mounted(){
+   service.getProducts().then(res=>{
+      this.products = res;
+
+   })
+ },
+ methods: {
+   goTo(id){
+     this.$router.push(`/about?id=${id}`)
+   }
+ }
 }
 </script>
